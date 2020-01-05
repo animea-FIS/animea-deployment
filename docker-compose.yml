@@ -1,0 +1,41 @@
+version: '3'
+services:
+  animea-gateway:
+    image: animea/animea-gateway:latest
+    restart: always
+    ports:
+      - "5000:3000"
+    env_file: .env
+  animea-animes:
+    image: animea/animea-animes:latest
+    restart: always
+    env_file: 
+      - .env
+      - animes_config.env
+    expose:
+      - ${ANIMES_PORT}
+  animea-friends:
+    image: animea/animea-friends:latest
+    restart: always
+    env_file: .env
+    expose:
+      - ${FRIENDS_PORT}
+  animea-auth:
+    image: animea/animea-auth:latest
+    restart: always
+    env_file: .env
+    expose:
+      - ${AUTH_PORT}
+  animea-meetings:
+    image: animea/animea-meetings:latest
+    restart: always
+    env_file: .env
+    expose:
+      - ${MEETINGS_PORT}
+  animea-profile:
+    image: animea/animea-profile:latest
+    restart: always
+    env_file: .env
+    expose:
+      - ${PROFILE_PORT}
+    

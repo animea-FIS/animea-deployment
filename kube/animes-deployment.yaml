@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: animea-animes
+spec:
+  selector:
+    matchLabels:
+      app: animea-animes
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: animea-animes
+    spec:
+      containers:
+      - name: envar-demo-container
+        image: animea/animea-animes-amd
+        ports:
+        - containerPort: 3001
+        env:
+        - name: SERVER_IP
+          value: '185.176.5.147'
+        - name: GATEWAY_PORT
+          value: '7401'
+        - name: API_PATH
+          value: 'https://kitsu.io/api/edge'
+        - name: DATABASE
+          value: 'animea-animes'
+        - name: USER
+          value: 'animea'
+        - name: PASSWORD
+          value: 'animea'
+        - name: OPTIONS
+          value: 'retryWrites=true&w=majority'
+          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: animea-animes
+spec:
+  selector:
+    app: animea-animes
+  ports:
+  - protocol: TCP
+    port: 3001
+    targetPort: 3001
+    nodePort: 31000
+  type: NodePort
